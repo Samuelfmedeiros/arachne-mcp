@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "arachne-mcp"
+version = "1.0.0"
+description = "🕷️ MCP server for Arachne — 9 tools: search, scrape, browser, vision, transcribe, RAG"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "httpx>=0.27.0",
+]
+license = {text = "MIT"}
+
+[project.urls]
+Homepage = "https://arachne.seu.pet"
+Source = "https://github.com/Samuelfmedeiros/arachne-mcp"
+
+[project.scripts]
+arachne-mcp = "arachne_mcp.__main__:main"
