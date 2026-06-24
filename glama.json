@@ -1,0 +1,62 @@
+{
+  "name": "Arachne",
+  "description": "🕷️ Universal web intelligence platform — scraping, browser automation, vision, transcription, RAG. 9 MCP tools in one server.",
+  "categories": ["web-scraping", "data-extraction", "browser-automation", "computer-vision", "rag"],
+  "github": "https://github.com/Samuelfmedeiros/arachne-mcp",
+  "license": "MIT",
+  "transport": "stdio",
+  "tools": [
+    {
+      "name": "arachne_search",
+      "description": "Search the web via DuckDuckGo (~0.8s). Factual questions, news, finding URLs."
+    },
+    {
+      "name": "arachne_scrape",
+      "description": "Extract URL content as clean markdown via Crawl4AI (~1.5-4s)."
+    },
+    {
+      "name": "arachne_extract",
+      "description": "Universal extractor — auto-detects web/audio/video/image/document format (~0ms cache, ~2-10s)."
+    },
+    {
+      "name": "arachne_browser_extract",
+      "description": "Extract via real Playwright browser with 4-layer anti-bot evasion (~4-12s). For Cloudflare/CAPTCHA sites."
+    },
+    {
+      "name": "arachne_browser_run",
+      "description": "Execute browser actions (click, type, login, screenshot) (~3-20s)."
+    },
+    {
+      "name": "arachne_query",
+      "description": "Query your RAG knowledge base with semantic search (~1-3s)."
+    },
+    {
+      "name": "arachne_vision",
+      "description": "Image analysis: OCR, colors, faces, quality, metadata (~1-8s)."
+    },
+    {
+      "name": "arachne_transcribe",
+      "description": "Transcribe audio/video/YouTube via Whisper (~3-15s)."
+    },
+    {
+      "name": "arachne_capabilities",
+      "description": "Self-discovery — returns all Arachne capabilities."
+    }
+  ],
+  "install": {
+    "pip": "pip install arachne-mcp",
+    "uvx": "uvx arachne-mcp",
+    "config": {
+      "ARACHNE_API_URL": {
+        "description": "Your Arachne instance URL",
+        "default": "https://arachne.seu.pet"
+      },
+      "ARACHNE_API_KEY": {
+        "description": "Your API key from /dev portal",
+        "required": true
+      }
+    }
+  },
+  "env_vars": ["ARACHNE_API_URL", "ARACHNE_API_KEY"],
+  "runtime": "python"
+}
