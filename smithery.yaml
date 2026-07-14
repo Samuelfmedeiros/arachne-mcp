@@ -1,0 +1,18 @@
+# Smithery.ai deployment config for Arachne MCP Server
+# https://smithery.ai/docs/deploy
+# This enables remote hosting of the MCP server via Smithery.
+
+build:
+  dockerfile: Dockerfile
+  context: .
+
+run:
+  command:
+    - python
+    - -m
+    - arachne_mcp
+  env:
+    - name: ARACHNE_API_URL
+      default: https://arachne.seu.pet
+    - name: ARACHNE_API_KEY
+      required: true
