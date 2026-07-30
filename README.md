@@ -1,3 +1,5 @@
+<!-- mcp-name: io.github.samuelfmedeiros/arachne-mcp -->
+
 # 🕷️ Arachne MCP Server
 
 **9 MCP tools** para web scraping, browser automation, visão computacional, transcrição de áudio e RAG — tudo via API.

@@ -1,0 +1,16 @@
+# ── Security: prevenir leak de .env e artefatos locais ──
+.git/
+.gitignore
+.env
+.env.*
+!.env.example
+.venv*/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+node_modules/
+build/
+dist/
+*.egg-info/
+.DS_Store
