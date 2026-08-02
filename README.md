@@ -1,4 +1,4 @@
-<!-- mcp-name: io.github.samuelfmedeiros/arachne-mcp -->
+<!-- mcp-name: io.github.Samuelfmedeiros/arachne-mcp -->
 
 # 🕷️ Arachne MCP Server
 
