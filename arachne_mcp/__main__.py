@@ -1,5 +1,5 @@
 """
-🕷️ Arachne MCP Server — 9 tools for web scraping + AI + RAG.
+🕷️ Arachne MCP Server — 15 tools for web scraping + AI + RAG + VRT (Oito Olhos).
 
 Connects to the Arachne API at https://arachne.seu.pet.
 Requires an API key (get one at https://arachne.seu.pet/dev).
@@ -180,6 +180,77 @@ TOOLS = [
             "type": "object",
             "properties": {}
         }
+    },
+    {
+        "name": "arachne_visual_snapshot",
+        "description": "🕷️ Visual snapshot (VRT): captures a URL and creates a baseline (1st time) or compares with the existing one. Pixel diff + DOM pairing + local VLM verdict (Douglas primary, Samuel fallback).",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "url": {"type": "string", "description": "URL to test"},
+                "name": {"type": "string", "description": "Test/baseline name (auto if empty)"},
+                "width": {"type": "integer", "description": "Viewport width", "default": 1280},
+                "height": {"type": "integer", "description": "Viewport height", "default": 720},
+                "threshold": {"type": "number", "description": "Diff ratio threshold (0-1)", "default": 0.01}
+            },
+            "required": ["url"]
+        }
+    },
+    {
+        "name": "arachne_visual_diff",
+        "description": "🕷️ Visual diff (VRT): compares the URL with an existing baseline. Returns diff ratio, bounding boxes, noise hint (DOM pairing) and local VLM verdict (regression/expected/noise).",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "url": {"type": "string", "description": "URL to test"},
+                "name": {"type": "string", "description": "Baseline name (from snapshot)"},
+                "threshold": {"type": "number", "description": "Diff ratio threshold (0-1)", "default": 0.01}
+            },
+            "required": ["url", "name"]
+        }
+    },
+    {
+        "name": "arachne_visual_gates",
+        "description": "🕷️ Deterministic visual gates: overflow-x, text collision, JS errors, broken resources — on 3 viewports. Returns CLEAN/DEFECTS with machine-parsable fix list. Key-free, no baseline needed.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "url": {"type": "string", "description": "URL to audit"},
+                "viewports": {"type": "array", "description": "Viewport widths", "items": {"type": "integer"}}
+            },
+            "required": ["url"]
+        }
+    },
+    {
+        "name": "arachne_visual_report",
+        "description": "🕷️ Runs a suite of visual tests (list of {url, name}) and generates an HTML side-by-side report + machine-readable JSON.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "tests": {"type": "array", "description": "List of {url, name, ...} test configs"},
+                "title": {"type": "string", "description": "Report title", "default": "Oito Olhos — Relatório Visual"}
+            },
+            "required": ["tests"]
+        }
+    },
+    {
+        "name": "arachne_visual_approve",
+        "description": "🕷️ Approves the current capture as the new baseline (accepts an expected visual change).",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "name": {"type": "string", "description": "Baseline name to approve"}
+            },
+            "required": ["name"]
+        }
+    },
+    {
+        "name": "arachne_visual_list",
+        "description": "🕷️ Lists all VRT baselines + last diff status.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {}
+        }
     }
 ]
 
@@ -193,6 +264,20 @@ async def call_api(endpoint: str, payload: dict) -> dict:
             return {"error": "Invalid API key. Get one at https://arachne.seu.pet/dev"}
         if resp.status_code == 429:
             return {"error": "Rate limit exceeded. Check your plan at https://arachne.seu.pet/dev"}
+        if resp.status_code != 200:
+            try:
+                detail = resp.json().get("detail", resp.text)
+            except Exception:
+                detail = resp.text[:500]
+            return {"error": f"API error ({resp.status_code}): {detail}"}
+        return resp.json()
+
+
+async def _call_api_get(endpoint: str) -> dict:
+    """Call the Arachne API via GET."""
+    url = f"{API_URL.rstrip('/')}{endpoint}"
+    async with httpx.AsyncClient(timeout=60.0) as client:
+        resp = await client.get(url, headers=HEADERS)
         if resp.status_code != 200:
             try:
                 detail = resp.json().get("detail", resp.text)
@@ -250,6 +335,37 @@ async def handle_tool(name: str, args: dict) -> list:
         })
     elif name == "arachne_capabilities":
         result = await call_api("/api/capabilities", {})
+    elif name == "arachne_visual_snapshot":
+        result = await call_api("/api/vision/visual/snapshot", {
+            "url": args["url"],
+            "name": args.get("name", ""),
+            "width": args.get("width", 1280),
+            "height": args.get("height", 720),
+            "threshold": args.get("threshold", 0.01),
+            "with_verdict": True,
+        })
+    elif name == "arachne_visual_diff":
+        result = await call_api("/api/vision/visual/diff", {
+            "url": args["url"],
+            "name": args["name"],
+            "threshold": args.get("threshold", 0.01),
+        })
+    elif name == "arachne_visual_gates":
+        result = await call_api("/api/vision/visual/gates", {
+            "url": args["url"],
+            "viewports": args.get("viewports", [1280, 768, 390]),
+        })
+    elif name == "arachne_visual_report":
+        result = await call_api("/api/vision/visual/report", {
+            "tests": args["tests"],
+            "title": args.get("title", "Oito Olhos — Relatório Visual"),
+        })
+    elif name == "arachne_visual_approve":
+        result = await call_api("/api/vision/visual/approve", {
+            "name": args["name"],
+        })
+    elif name == "arachne_visual_list":
+        result = await _call_api_get("/api/vision/visual/baselines")
     else:
         return [{"type": "text", "text": f"Unknown tool: {name}"}]
 
@@ -289,7 +405,7 @@ def main():
                     "result": {
                         "protocolVersion": "2024-11-05",
                         "capabilities": {"tools": {}},
-                        "serverInfo": {"name": "arachne-mcp", "version": "1.0.0"}
+                        "serverInfo": {"name": "arachne-mcp", "version": "1.1.0"}
                     }
                 }
                 sys.stdout.write(json.dumps(resp) + "\n")
