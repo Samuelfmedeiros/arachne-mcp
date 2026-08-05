@@ -1,34 +1,34 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.Samuelfmedeiros/arachne-mcp",
-  "description": "Web scraping, browser automation, vision, OCR, audio, RAG — 9 MCP tools via Arachne API",
+  "description": "Arachne MCP — scraping, visão, OCR, RAG + VRT visual (15 tools).",
   "repository": {
     "url": "https://github.com/Samuelfmedeiros/arachne-mcp",
     "source": "github"
   },
-  "version": "1.0.1",
+  "version": "1.1.0",
   "packages": [
     {
       "registryType": "pypi",
       "identifier": "arachne-mcp",
-      "version": "1.0.1",
+      "version": "1.1.0",
       "transport": {
         "type": "stdio"
       },
       "environmentVariables": [
         {
+          "name": "ARACHNE_API_KEY",
           "description": "Sua chave de API do Arachne (crie em https://arachne.seu.pet/dev)",
           "isRequired": true,
           "format": "string",
-          "isSecret": true,
-          "name": "ARACHNE_API_KEY"
+          "isSecret": true
         },
         {
+          "name": "ARACHNE_BASE_URL",
           "description": "URL base da API do Arachne (opcional, default: https://arachne.seu.pet)",
           "isRequired": false,
           "format": "string",
-          "isSecret": false,
-          "name": "ARACHNE_BASE_URL"
+          "isSecret": false
         }
       ]
     }
