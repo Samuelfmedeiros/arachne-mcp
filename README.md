@@ -41,7 +41,7 @@ Backed by [Arachne](https://arachne.seu.pet). Works with **Claude Desktop**, **C
 |------|-----------|
 | `arachne_capabilities` | Auto-discover capabilities |
 
-> **VRT with local LLM:** Oito Olhos uses pixel diff + DOM pairing + **CLIP semantic triage** + **local VLM** (Qwen2.5-VL via Douglas, Samuel mirror fallback) — classifying changes as `regression | expected | noise`, with a fix suggestion (`CORRECAO:`) when it detects a bug. **Zero API key for the verdict.**
+> **VRT with local LLM:** Oito Olhos uses pixel diff + DOM pairing + **CLIP semantic triage** + **local VLM** (Qwen2.5-VL via Douglas, Samuel mirror fallback) — classifying changes as `regression | expected | noise`, with a fix suggestion (`CORRECAO:`) when it detects a bug. **No third-party API key for the verdict.**
 
 ## 🚀 Quick Start
 

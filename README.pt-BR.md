@@ -41,7 +41,7 @@ Conecta no [Arachne](https://arachne.seu.pet) como backend. Funciona com **Claud
 |------|-----------|
 | `arachne_capabilities` | Auto-descoberta de capacidades |
 
-> **VRT com LLM local:** o Oito Olhos usa pixel diff + DOM pareado + **CLIP semântico** + **VLM local** (Qwen2.5-VL via Douglas, fallback Samuel) — classificando mudanças como `regression | expected | noise`, com sugestão de correção (`CORRECAO:`) quando detecta bug. **Zero API key para o veredito.**
+> **VRT com LLM local:** o Oito Olhos usa pixel diff + DOM pareado + **CLIP semântico** + **VLM local** (Qwen2.5-VL via Douglas, fallback Samuel) — classificando mudanças como `regression | expected | noise`, com sugestão de correção (`CORRECAO:`) quando detecta bug. **Sem API key de terceiros para o veredito.**
 
 ## 🚀 Quick Start
 
