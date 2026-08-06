@@ -405,7 +405,7 @@ def main():
                     "result": {
                         "protocolVersion": "2024-11-05",
                         "capabilities": {"tools": {}},
-                        "serverInfo": {"name": "arachne-mcp", "version": "1.1.1"}
+                        "serverInfo": {"name": "arachne-mcp", "version": "1.1.2"}
                     }
                 }
                 sys.stdout.write(json.dumps(resp) + "\n")
