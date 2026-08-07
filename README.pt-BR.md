@@ -2,52 +2,103 @@
 
 # 🕷️ Arachne MCP Server
 
-> 🇧🇷 **Português** · [🌐 English](README.md)
+> [🌐 English](README.md) · 🇧🇷 **Português**
 
-**15 MCP tools** para web scraping, browser automation, visão computacional, transcrição de áudio, RAG e **Visual Regression Testing (VRT) — o Oito Olhos da Aranha** — tudo via API.
+**49 MCP tools** para scraping web, automação de browser, visão computacional, transcrição de áudio, RAG, **Pesquisa de Sentimento Social** e **Visual Regression Testing (VRT) — o Oito Olhos** — tudo através da API do Arachne.
 
-Conecta no [Arachne](https://arachne.seu.pet) como backend. Funciona com **Claude Desktop**, **Cursor**, **Codex CLI**, **Hermes** e qualquer cliente MCP.
+Baseado no [Arachne](https://arachne.seu.pet). Funciona com **Claude Desktop**, **Cursor**, **Codex CLI**, **Hermes** e qualquer cliente MCP.
 
-## ✨ Tools
+## ✨ Tools (49)
 
 ### 🔍 Web & Dados
-| Tool | O que faz | Ideal para |
+| Tool | O que faz | Melhor para |
 |------|-----------|------------|
-| `arachne_search` | Busca na web via DuckDuckGo | Pesquisa, coleta de informações |
-| `arachne_scrape` | Extrai markdown limpo de URLs | Páginas estáticas, blogs, docs |
+| `arachne_search` | Busca web via DuckDuckGo | Pesquisa, coleta de leads |
+| `arachne_scrape` | Markdown limpo de URLs | Páginas estáticas, blogs, docs |
 | `arachne_extract` | Extrai QUALQUER formato (áudio, vídeo, PDF, YouTube) | **Canivete suíço** |
-| `arachne_browser_extract` | Navegador real com evasão Cloudflare/CAPTCHA | Sites que bloqueiam scraper |
-| `arachne_browser_run` | Executa ações em navegador (click, type, login) | Automação de formulários |
-| `arachne_query` | Pergunta pra sua base de conhecimento RAG | Chatbot com seus dados |
+| `arachne_browser_extract` | Browser real com evasão Cloudflare/CAPTCHA | Sites que bloqueiam scrapers |
+| `arachne_browser_run` | Ações de browser (click, type, login) | Automação de formulários |
+| `arachne_screenshot` | Screenshot de URL (página inteira ou viewport) | Evidência visual |
+| `arachne_record` | Grava screencast da página (.webm) | Interações, demos |
+| `arachne_torrent_extract` | Extrai magnet links de sites BR de torrent | Aquisição de torrents |
+| `arachne_download` | Download universal (URL, repo, PyPI, npm) | Baixar qualquer artefato |
+| `arachne_query` | Pergunte à sua base RAG | Chatbot com seus dados |
+
+### 🔍 Pesquisa de Sentimento Social
+| Tool | O que faz | Melhor para |
+|------|-----------|------------|
+| `arachne_social_research` | Pesquisa o que as pessoas REALMENTE dizem (HN/Reddit/YouTube, últimos N dias) + AI judge via VLM local | **Hype vs realidade, reclamações, sentimento de mercado** |
 
 ### 👁️ Visão & Áudio
-| Tool | O que faz | Ideal para |
+| Tool | O que faz | Melhor para |
 |------|-----------|------------|
-| `arachne_vision` | Analisa imagens: OCR, cores, faces, descrição AI | Extrair texto de fotos |
-| `arachne_transcribe` | Transcreve áudio/vídeo/YouTube com Whisper | Podcast, reunião, vídeo |
+| `arachne_vision` | Análise de imagem: OCR, cores, rostos, descrição IA | Extração de texto de fotos |
+| `arachne_screenshot_vision` | Screenshot + pipeline de visão completo | Inspeção visual de páginas |
+| `arachne_pdf_vision` | Extrai imagens de PDF + análise de visão | PDFs escaneados |
+| `arachne_analyze_video` | Metadados de vídeo: cores, OCR, geometria, VQA, áudio | Entendimento de vídeo |
+| `arachne_transcribe` | Transcrição de áudio/vídeo/YouTube com Whisper | Podcast, reunião, vídeo |
 
 ### 🕷️ Oito Olhos — Visual Regression Testing (VRT)
-| Tool | O que faz | Ideal para |
+| Tool | O que faz | Melhor para |
 |------|-----------|------------|
-| `arachne_visual_snapshot` | Captura URL e cria baseline (1ª vez) ou compara | Testes visuais idempotentes |
+| `arachne_visual_snapshot` | Captura URL → cria baseline (1ª vez) ou compara | Testes visuais idempotentes |
 | `arachne_visual_diff` | Compara com baseline → diff + veredito semântico | Verificação pós-deploy |
-| `arachne_visual_gates` | Auditoria determinística: overflow, colisão de texto, JS errors | **Key-free, sem baseline** |
-| `arachne_visual_report` | Suíte de testes → HTML side-by-side | Revisão consolidada |
-| `arachne_visual_approve` | Aprova current → novo baseline | Aceitar mudança esperada |
+| `arachne_visual_gates` | Auditoria determinística: overflow, colisão de texto, erros JS | **Sem key, sem baseline** |
+| `arachne_visual_report` | Suíte de testes → HTML lado a lado | Revisão consolidada |
+| `arachne_visual_approve` | Promove atual → novo baseline | Aceitar mudança esperada |
 | `arachne_visual_list` | Lista baselines + status | Monitorar o que existe |
+| `arachne_visual_video` | VRT de vídeo: grava screencast + compara (animações) | Hover, carrosséis, transições |
+| `arachne_visual_video_report` | Suíte de vídeo → relatório HTML interativo | Revisão de regressão de animação |
 
-### 🧭 Utilidades
+### 🤖 Desktop & Agêntico
+| Tool | O que faz | Melhor para |
+|------|-----------|------------|
+| `arachne_desktop` | Controle de desktop (janelas, type, key, click) | Automação de SO |
+| `arachne_desktop_os` | Desktop agêntico com "olho" VLM (screenshot + descrição) | Ver antes de agir |
+| `arachne_observe` | Screenshot + bounding boxes numerados clicáveis | Navegação de agente GUI |
+
+### 📦 GitHub / GitLab / Pacotes
 | Tool | O que faz |
 |------|-----------|
-| `arachne_capabilities` | Auto-descoberta de capacidades |
+| `arachne_repo_download` | Baixa repo GitHub como zip (branch/token) |
+| `arachne_repo_fork` | Faz fork de repo GitHub |
+| `arachne_repo_forks` | Lista forks por estrelas |
+| `arachne_repo_index` | Baixa + indexa repo no RAG |
+| `arachne_releases` | Lista releases GitHub com assets |
+| `arachne_release_download` | Baixa asset de release |
+| `arachne_pypi_download` | Baixa pacote PyPI (sdist/wheel) |
+| `arachne_npm_download` | Baixa pacote npm (tarball) |
+| `arachne_gitlab_download` | Baixa projeto GitLab (archive) |
 
-> **VRT com LLM local:** o Oito Olhos usa pixel diff + DOM pareado + **CLIP semântico** + **VLM local** (Qwen2.5-VL via Douglas, fallback Samuel) — classificando mudanças como `regression | expected | noise`, com sugestão de correção (`CORRECAO:`) quando detecta bug. **Sem API key de terceiros para o veredito.**
+### 🧠 Code Knowledge Graph
+| Tool | O que faz |
+|------|-----------|
+| `code_graph` | Explora estrutura de código: stats, busca, rotas, arquivos, deps |
+| `kg_context` | Contexto de código rankeado BFS (~2K tokens) |
+| `kg_communities` | Detecção de comunidades (Leiden/greedy) |
+| `kg_god_nodes` | Entidades de código mais influentes (PageRank) |
+| `kg_watch` | Git watcher — detecção incremental de mudanças |
 
-## 🚀 Quick Start
+### 🧭 Utilitários
+| Tool | O que faz |
+|------|-----------|
+| `arachne_capabilities` | Auto-descobre capacidades |
+| `arachne_ping` | Health check |
+| `arachne_metrics` | Métricas do servidor (CPU, RAM, disco) |
+| `arachne_plan` | Análise de objetivo → sugestão de cadeia de tools |
+| `arachne_calc` | Calculadora matemática segura (AST-sandbox) |
+| `arachne_format_converter` | Conversor universal (65+ formatos) |
+| `arachne_sandbox_status` | Verifica disponibilidade do sandbox ai-jail |
 
-### 1. Pegue uma API Key
+> **VRT com LLM local:** Oito Olhos usa pixel diff + pareamento DOM + **triagem semântica CLIP** + **VLM local** (Qwen2.5-VL via Douglas, espelho Samuel como fallback) — classificando mudanças como `regression | expected | noise`, com sugestão de correção (`CORRECAO:`) quando detecta bug. **Sem API key de terceiros para o veredito.**
 
-Crie em **[arachne.seu.pet/dev](https://arachne.seu.pet/dev)** (plano Free: 500 req/mês).
+> **Pesquisa Social com AI judge local:** `arachne_social_research` busca no Hacker News (Algolia), Reddit (JSON API + fallback browser_agent/Camoufox) e YouTube (yt-dlp) nos últimos N dias, pontua por engajamento real (upvotes/points/views) e sintetiza um relatório **hype vs realidade** com VLM local (sem API keys de terceiros).
+
+## 🚀 Início Rápido
+
+### 1. Obtenha uma API key
+
+Crie em **[arachne.seu.pet/dev](https://arachne.seu.pet/dev)** (Plano Free: 500 req/mês).
 
 ### 2. Configure no Claude Desktop
 
@@ -58,82 +109,41 @@ Crie em **[arachne.seu.pet/dev](https://arachne.seu.pet/dev)** (plano Free: 500 
       "command": "python3",
       "args": ["-m", "arachne_mcp"],
       "env": {
-        "ARACHNE_API_KEY": "sua_chave_aqui",
-        "ARACHNE_BASE_URL": "https://arachne.seu.pet"
+        "ARACHNE_API_KEY": "arn_your_key_here",
+        "ARACHNE_API_URL": "https://arachne.seu.pet"
       }
     }
   }
 }
 ```
 
-### 3. Ou teste direto
+### 3. Ou rode direto
 
 ```bash
-export ARACHNE_API_KEY="sua_chave"
+pip install arachne-mcp
+export ARACHNE_API_KEY="arn_your_key_here"
 python3 -m arachne_mcp
 ```
 
-> Precisa de `httpx`: `pip install httpx`
+## 📡 Arquitetura
 
-## 📦 Como funciona
+O servidor MCP é um **proxy leve**: encaminha cada chamada de tool para a API do
+Arachne (`POST /api/mcp/proxy`), que executa a tool no servidor e retorna o
+resultado. Isso mantém o cliente leve (só `httpx`), enquanto todo o trabalho
+pesado — browser, VLM, visão, RAG — roda no servidor Arachne.
 
-O MCP server é um **cliente HTTP** que chama a API pública do Arachne. Zero dependência de infra local — roda de qualquer lugar.
-
-```
-Seu agente AI → MCP stdio → arachne_mcp.py → HTTP → Arachne API → resultado
-```
-
-## 🕷️ Exemplos — Oito Olhos (VRT)
-
-```python
-# 1. Cria baseline de uma página (1ª vez)
-arachne_visual_snapshot(url="https://meusite.com/", name="home")
-
-# 2. Após um deploy: compara e recebe veredito
-arachne_visual_diff(url="https://meusite.com/", name="home")
-# → { diff_ratio: 0.023, classification: "regression",
-#     description: "Botão CTA mudou de cor. CLASSIFICACAO: regression
-#     CORRECAO: verificar CSS de .cta — cor deve ser var(--primary)" }
-
-# 3. Mudança esperada? Aprova como novo baseline
-arachne_visual_approve(name="home")
-
-# 4. Auditoria sem baseline (gates determinísticos)
-arachne_visual_gates(url="https://meusite.com/")
-# → verdict: CLEAN | DEFECTS com lista machine-parsable
-
-# 5. Suíte completa → report HTML
-arachne_visual_report(tests=[{"url": "https://meusite.com/", "name": "home"},
-                             {"url": "https://meusite.com/pricing", "name": "pricing"}])
+```text
+Claude Desktop / Cursor / Codex
+        │  MCP (stdio)
+        ▼
+arachne-mcp (proxy leve, 49 tools)
+        │  HTTP + X-API-Key
+        ▼
+API Arachne (arachne.seu.pet) → executa tool → retorna JSON
 ```
 
-**Dicas:**
-- Páginas autenticadas: use `auth: true` — o motor faz login e injeta o token.
-- Áreas dinâmicas (stats, relógio): use `mask: [{"selector": ".stats"}]`.
-- Diferenças de cor/tema que não são bugs: o **CLIP semântico** classifica como `expected` sem acionar o VLM 7B.
+## 🔐 Segurança
 
-## 📊 Planos
-
-| Plano | Preço | Requests/mês | Features |
-|-------|-------|-------------|----------|
-| **Free** | R$ 0 | 500 | search, scrape, jobs |
-| **Pro** | R$ 49/mês | 10.000 | + browser, vision, transcribe, MCP, **VRT visual** |
-| **Enterprise** | R$ 199/mês | 100.000 | + admin, export, suporte dedicado |
-
-## 🏗️ Stack
-
-- **Backend:** FastAPI + Crawl4AI + Whisper + Tesseract + PostgreSQL
-- **VRT:** Playwright + ffmpeg (vídeo) + CLIP ViT-B-32 + Qwen2.5-VL (VLM local)
-- **Engines:** Trafilatura → Crawl4AI SDK → Sidecar Docker → Camoufox
-- **MCP Transport:** stdio (compatível com Claude Desktop, Cursor, Codex, Hermes)
-
-## 🔗 Links
-
-- [Arachne Platform](https://arachne.seu.pet)
-- [Developer Portal](https://arachne.seu.pet/dev)
-- [Python SDK (PyPI)](https://pypi.org/project/arachne-sdk/)
-- [GitHub](https://github.com/Samuelfmedeiros/arachne-mcp)
-
----
-
-🕷️ Built with the Arachne engine. Open source MCP server.
+- **Auth por API key**: toda requisição carrega `X-API-Key` (crie em `/dev`)
+- **Rate limits** aplicados no servidor por plano
+- Nenhum código roda no cliente — o proxy só encaminha argumentos
