@@ -1,5 +1,5 @@
 """
-Arachne MCP Server — 49 tools for web scraping + AI + RAG + VRT + Social Research.
+Arachne MCP Server — 48 tools for web scraping + AI + RAG + VRT + Social Research + GitHub.
 
 Connects to the Arachne API at https://arachne.seu.pet.
 Requires an API key (get one at https://arachne.seu.pet/dev).
@@ -264,6 +264,26 @@ TOOLS = [
         "name": "arachne_social_research",
         "description": "🔍 SOCIAL SENTIMENT RESEARCH (~3-20s). Pesquisa o que as pessoas REALMENTE estão dizendo sobre um tema nas redes sociais (Hacker News, Reddit, YouTube) nos últimos 30 dias — sentimento, hype vs realidade, reclamações e top fontes com link. Sem API keys de terceiros.",
         "inputSchema": {"type": "object", "properties": {"query": {"type": "string"}, "days": {"type": "integer", "default": 30}, "platforms": {"type": "string", "default": "hackernews,reddit,youtube"}, "limit_per_platform": {"type": "integer", "default": 25}, "include_items": {"type": "boolean", "default": True}}, "required": ["query"]}
+    },
+    {
+        "name": "arachne_github_trending",
+        "description": "🐙 GITHUB TRENDING (~2s). Repositórios e devs em alta no GitHub (scraping oficial github.com/trending, sem custo, sem chave). Filtros: period (daily/weekly/monthly), language (ex: python). Retorna repos com descrição/linguagem/stars + devs em alta.",
+        "inputSchema": {"type": "object", "properties": {"period": {"type": "string", "default": "daily"}, "language": {"type": "string", "default": ""}, "developers": {"type": "boolean", "default": True}}}
+    },
+    {
+        "name": "arachne_github_user_prs",
+        "description": "🐙 GITHUB PRs POR AUTOR (~1-3s). PRs de um usuário do GitHub (título, repo, estado, data) via API pública de eventos. Filtros since/until (YYYY-MM-DD). Sem custo.",
+        "inputSchema": {"type": "object", "properties": {"username": {"type": "string"}, "since": {"type": "string", "default": ""}, "until": {"type": "string", "default": ""}, "limit": {"type": "integer", "default": 20}}, "required": ["username"]}
+    },
+    {
+        "name": "arachne_github_user_activity",
+        "description": "🐙 GITHUB ATIVIDADE DE DEV (~1-2s). Contribuições por mês + tipos de evento de um usuário do GitHub (agrega eventos públicos). Sem custo.",
+        "inputSchema": {"type": "object", "properties": {"username": {"type": "string"}, "months": {"type": "integer", "default": 6}}, "required": ["username"]}
+    },
+    {
+        "name": "arachne_github_repo_metadata",
+        "description": "🐙 GITHUB REPO METADATA (~1s). Metadados completos de um repositório GitHub (stars, forks, issues, linguagem, topics, license, datas) via API oficial. Sem custo.",
+        "inputSchema": {"type": "object", "properties": {"url": {"type": "string"}}, "required": ["url"]}
     }
 ]
 
@@ -287,7 +307,7 @@ async def call_api(endpoint: str, payload: dict) -> dict:
 
 
 async def handle_tool(name: str, args: dict) -> list:
-    """Execute a tool via the Arachne MCP proxy endpoint (supports all 49 tools)."""
+    """Execute a tool via the Arachne MCP proxy endpoint (supports all 48 tools)."""
     result = await call_api("/api/mcp/proxy", {
         "name": name,
         "arguments": args,
