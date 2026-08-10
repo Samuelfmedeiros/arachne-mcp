@@ -69,6 +69,10 @@ Baseado no [Arachne](https://arachne.seu.pet). Funciona com **Claude Desktop**, 
 | `arachne_pypi_download` | Baixa pacote PyPI (sdist/wheel) |
 | `arachne_npm_download` | Baixa pacote npm (tarball) |
 | `arachne_gitlab_download` | Baixa projeto GitLab (archive) |
+| `arachne_github_trending` | Repos + devs em alta no GitHub (período/linguagem, custo zero) |
+| `arachne_github_user_prs` | PRs de um usuário (filtros since/until) |
+| `arachne_github_user_activity` | Atividade mensal + tipos de evento de um usuário |
+| `arachne_github_repo_metadata` | Metadados completos do repo (stars/forks/issues/license) |
 
 ### 🧠 Code Knowledge Graph
 | Tool | O que faz |

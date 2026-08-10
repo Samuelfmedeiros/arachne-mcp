@@ -69,6 +69,10 @@ Backed by [Arachne](https://arachne.seu.pet). Works with **Claude Desktop**, **C
 | `arachne_pypi_download` | Download PyPI package (sdist/wheel) |
 | `arachne_npm_download` | Download npm package tarball |
 | `arachne_gitlab_download` | Download GitLab project archive |
+| `arachne_github_trending` | GitHub trending repos + developers (period/language, zero cost) |
+| `arachne_github_user_prs` | PRs authored by a user (since/until filters) |
+| `arachne_github_user_activity` | Monthly activity + event types for a user |
+| `arachne_github_repo_metadata` | Full repo metadata (stars/forks/issues/license) |
 
 ### 🧠 Code Knowledge Graph
 | Tool | What it does |
