@@ -1,5 +1,5 @@
 """
-Arachne MCP Server — 48 tools for web scraping + AI + RAG + VRT + Social Research + GitHub.
+Arachne MCP Server — 56 tools for web scraping + AI + RAG + VRT + Social Research + GitHub.
 
 Connects to the Arachne API at https://arachne.seu.pet.
 Requires an API key (get one at https://arachne.seu.pet/dev).
@@ -284,6 +284,21 @@ TOOLS = [
         "name": "arachne_github_repo_metadata",
         "description": "🐙 GITHUB REPO METADATA (~1s). Metadados completos de um repositório GitHub (stars, forks, issues, linguagem, topics, license, datas) via API oficial. Sem custo.",
         "inputSchema": {"type": "object", "properties": {"url": {"type": "string"}}, "required": ["url"]}
+    },
+    {
+        "name": "arachne_screen_analyze",
+        "description": "🖥️ SCREEN ANALYSIS FOR COMPUTER USE (Frente 8). Analisa captura de tela (data URI/URL) e devolve descrição + elementos clicáveis (texto+posição) + próximas ações. VLM local (Douglas→Ollama).",
+        "inputSchema": {"type": "object", "properties": {"screenshot": {"type": "string"}, "task": {"type": "string", "default": ""}, "language": {"type": "string", "default": "pt-BR"}}, "required": ["screenshot"]}
+    },
+    {
+        "name": "arachne_visual_failure_bundle",
+        "description": "📦 FAILURE BUNDLE (~0.01s, sem nova captura). Retorna UM artefato auto-consistente da última falha visual de um teste: snapshot_id único, verdict estruturado (failure_kind, root_cause, recommended_fix), diff, screenshots (before/after/diff como data URLs), DOM pareado e patch heal. O agente lê o bundle, corrige com recommended_fix, re-roda o diff e aprova.",
+        "inputSchema": {"type": "object", "properties": {"name": {"type": "string"}}, "required": ["name"]}
+    },
+    {
+        "name": "arachne_youtube_comments",
+        "description": "💬 YOUTUBE COMENTÁRIOS (~5-30s). Extrai comentários de um vídeo YouTube via yt-dlp (grátis, sem API key) + metadata do vídeo (título, canal, views, likes).",
+        "inputSchema": {"type": "object", "properties": {"url": {"type": "string"}, "max_comments": {"type": "integer", "default": 30}}, "required": ["url"]}
     }
 ]
 
@@ -350,7 +365,7 @@ def main():
                     "result": {
                         "protocolVersion": "2024-11-05",
                         "capabilities": {"tools": {}},
-                        "serverInfo": {"name": "arachne-mcp", "version": "1.2.0"}
+                        "serverInfo": {"name": "arachne-mcp", "version": "1.4.0"}
                     }
                 }
                 sys.stdout.write(json.dumps(resp) + "\n")

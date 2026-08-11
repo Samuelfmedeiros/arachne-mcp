@@ -129,6 +129,38 @@ export ARACHNE_API_KEY="arn_your_key_here"
 python3 -m arachne_mcp
 ```
 
+## 🪟 Instalação no Windows (funciona de primeira)
+
+O `arachne-mcp` é um **cliente 100% Python** (só `httpx`) — sem dependências
+Linux-only, sem precisar de WSL. Instale no Windows com:
+
+```bat
+pip install arachne-mcp
+```
+
+Depois configure em qualquer cliente MCP usando o entry point de console
+(`arachne-mcp` entra no PATH após a instalação):
+
+```json
+{
+  "mcpServers": {
+    "arachne": {
+      "command": "arachne-mcp",
+      "args": [],
+      "env": {
+        "ARACHNE_API_KEY": "arn_your_key_here",
+        "ARACHNE_API_URL": "https://arachne.seu.pet"
+      }
+    }
+  }
+}
+```
+
+> ⚠️ **Não** aponte `command` para um caminho Linux (ex: `/home/user/.../venv/bin/arachne-mcp`) —
+> ele só existe na máquina onde o servidor Arachne roda. No Windows (e em qualquer
+> outra máquina cliente) use o pacote pip + API key: todo o trabalho pesado
+> (browser, VLM, visão, RAG) roda no servidor por trás de `https://arachne.seu.pet`.
+
 ## 📡 Arquitetura
 
 O servidor MCP é um **proxy leve**: encaminha cada chamada de tool para a API do
