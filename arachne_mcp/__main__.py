@@ -1,5 +1,7 @@
 """
-Arachne MCP Server — 56 tools for web scraping + AI + RAG + VRT + Social Research + GitHub.
+Arachne MCP Server — proxy for the Arachne API (search, scrape, browser, vision,
+transcribe, RAG, Social Research, GitHub, VRT visual). The tool list is fetched
+from the server registry at runtime; TOOLS below is only an offline fallback.
 
 Connects to the Arachne API at https://arachne.seu.pet.
 Requires an API key (get one at https://arachne.seu.pet/dev).
@@ -299,6 +301,26 @@ TOOLS = [
         "name": "arachne_youtube_comments",
         "description": "💬 YOUTUBE COMENTÁRIOS (~5-30s). Extrai comentários de um vídeo YouTube via yt-dlp (grátis, sem API key) + metadata do vídeo (título, canal, views, likes).",
         "inputSchema": {"type": "object", "properties": {"url": {"type": "string"}, "max_comments": {"type": "integer", "default": 30}}, "required": ["url"]}
+    },
+    {
+        "name": "arachne_rare_doc",
+        "description": "📜 ANÁLISE DE OBRAS RARAS/DOCUMENTOS ANTIGOS (~3-120s). Pipeline de 6 fases: restauração, layout, OCR histórico, pós-correção LLM, paleografia VLM e enriquecimento.",
+        "inputSchema": {"type": "object", "properties": {"image_url": {"type": "string", "default": ""}, "pdf_url": {"type": "string", "default": ""}, "page_index": {"type": "integer", "default": 0}, "dpi": {"type": "integer", "default": 300}, "lang": {"type": "string", "default": "por+eng+fra+lat"}, "title": {"type": "string", "default": ""}, "use_paleo": {"type": "boolean", "default": False}}}
+    },
+    {
+        "name": "arachne_computer_use",
+        "description": "🖥️ COMPUTER USE UNIFIED (~1-15s). Agente unificado de controle do computador: observe, click, scroll, drag, type, key, activate, navigate, scrape, extract.",
+        "inputSchema": {"type": "object", "properties": {"action": {"type": "string", "default": "observe"}, "index": {"type": "integer", "default": 0}, "url": {"type": "string", "default": ""}, "text": {"type": "string", "default": ""}, "key": {"type": "string", "default": ""}, "x": {"type": "integer", "default": 0}, "y": {"type": "integer", "default": 0}, "x2": {"type": "integer", "default": 0}, "y2": {"type": "integer", "default": 0}, "button": {"type": "integer", "default": 1}, "amount": {"type": "integer", "default": 3}, "direction": {"type": "string", "default": "down"}, "task": {"type": "string", "default": ""}, "language": {"type": "string", "default": "pt-BR"}}}
+    },
+    {
+        "name": "arachne_navigate_predictive",
+        "description": "🎬 NAVEGAÇÃO PREDITIVA (tipo vídeo). Planeja TODOS os passos antecipadamente e executa em cadeia.",
+        "inputSchema": {"type": "object", "properties": {"goal": {"type": "string"}, "url": {"type": "string", "default": ""}, "dom": {"type": "string", "default": ""}, "has_screenshot": {"type": "boolean", "default": False}, "use_lookahead": {"type": "boolean", "default": True}, "k": {"type": "integer", "default": 3}, "driver": {"type": "string", "default": "headless"}, "ok_human": {"type": "boolean", "default": False}, "extract": {"type": "boolean", "default": True}, "live": {"type": "boolean", "default": False}, "adaptive": {"type": "boolean", "default": True}, "max_extensions": {"type": "integer", "default": 3}}, "required": ["goal"]}
+    },
+    {
+        "name": "arachne_onboarding",
+        "description": "🎫 ONBOARDING ZERO-FRICÇÃO (~2s). Cria conta + Free key em 1 chamada. Use quando o usuário quiser usar o arachne-mcp sem ter chave.",
+        "inputSchema": {"type": "object", "properties": {"email": {"type": "string", "default": ""}, "name": {"type": "string", "default": ""}}}
     }
 ]
 
@@ -322,7 +344,7 @@ async def call_api(endpoint: str, payload: dict) -> dict:
 
 
 async def handle_tool(name: str, args: dict) -> list:
-    """Execute a tool via the Arachne MCP proxy endpoint (supports all 48 tools)."""
+    """Execute a tool via the Arachne MCP proxy endpoint (supports all tools)."""
     result = await call_api("/api/mcp/proxy", {
         "name": name,
         "arguments": args,
@@ -336,6 +358,37 @@ async def handle_tool(name: str, args: dict) -> list:
         return [{"type": "text", "text": inner if isinstance(inner, str) else json.dumps(inner, indent=2, ensure_ascii=False)}]
 
     return [{"type": "text", "text": json.dumps(result, indent=2, ensure_ascii=False)}]
+
+
+# Cache da lista de tools vinda do servidor (registry = fonte única de verdade).
+_SERVER_TOOLS: list | None = None
+
+
+async def get_tools() -> list:
+    """Busca tools/list do servidor Arachne em vez da lista hardcoded.
+
+    A lista estática TOOLS ficava stale: tools novas (rare_doc, computer_use,
+    navigate_predictive, onboarding, ...) existiam no servidor mas sumiam do
+    cliente. Aqui o registry do servidor é a fonte única. Fallback: TOOLS.
+    """
+    global _SERVER_TOOLS
+    if _SERVER_TOOLS is not None:
+        return _SERVER_TOOLS
+    try:
+        async with httpx.AsyncClient(timeout=15) as client:
+            resp = await client.post(
+                f"{API_URL}/api/mcp",
+                headers=HEADERS,
+                json={"jsonrpc": "2.0", "id": 1, "method": "tools/list"},
+            )
+            resp.raise_for_status()
+            tools = (resp.json().get("result") or {}).get("tools") or []
+            if tools:
+                _SERVER_TOOLS = tools
+                return tools
+    except Exception as e:
+        print(f"[arachne_mcp] tools/list remoto falhou, usando fallback local: {e}", file=sys.stderr)
+    return TOOLS
 
 
 def main():
@@ -365,7 +418,7 @@ def main():
                     "result": {
                         "protocolVersion": "2024-11-05",
                         "capabilities": {"tools": {}},
-                        "serverInfo": {"name": "arachne-mcp", "version": "1.4.0"}
+                        "serverInfo": {"name": "arachne-mcp", "version": "1.5.0"}
                     }
                 }
                 sys.stdout.write(json.dumps(resp) + "\n")
@@ -374,7 +427,7 @@ def main():
                 tools_notification = {
                     "jsonrpc": "2.0",
                     "method": "notifications/tools/list",
-                    "params": {"tools": TOOLS}
+                    "params": {"tools": await get_tools()}
                 }
                 sys.stdout.write(json.dumps(tools_notification) + "\n")
                 sys.stdout.flush()
@@ -383,7 +436,7 @@ def main():
                 resp = {
                     "jsonrpc": "2.0",
                     "id": msg_id,
-                    "result": {"tools": TOOLS}
+                    "result": {"tools": await get_tools()}
                 }
                 sys.stdout.write(json.dumps(resp) + "\n")
                 sys.stdout.flush()
