@@ -1,0 +1,14 @@
+{
+  "name": "arachne-settlegrid-proxy",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Cobrança por chamada na frente da API do Arachne (SettleGrid).",
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "dependencies": {
+    "@settlegrid/mcp": "^0.2.0",
+    "express": "^5.1.0"
+  }
+}
